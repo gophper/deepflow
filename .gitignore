@@ -54,5 +54,5 @@ target/
 /agent/src/ebpf/.flamegraph.pl
 /agent/src/ebpf/kernel/*.tmp
 
-
-
+# pseudo-deepflow-agent binary
+cmd/pseudo-deepflow-agent/pseudo-deepflow-agent

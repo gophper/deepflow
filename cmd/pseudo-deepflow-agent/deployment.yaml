@@ -1,0 +1,81 @@
+---
+# ServiceAccount for pseudo-deepflow-agent
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pseudo-deepflow-agent
+  namespace: deepflow
+---
+# ClusterRole with necessary permissions
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pseudo-deepflow-agent
+rules:
+- apiGroups: [""]
+  resources:
+    - nodes
+    - namespaces
+    - pods
+    - services
+    - replicationcontrollers
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources:
+    - deployments
+    - statefulsets
+    - daemonsets
+    - replicasets
+  verbs: ["get", "list", "watch"]
+---
+# ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pseudo-deepflow-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: pseudo-deepflow-agent
+subjects:
+- kind: ServiceAccount
+  name: pseudo-deepflow-agent
+  namespace: deepflow
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pseudo-deepflow-agent
+  namespace: deepflow
+  labels:
+    app: pseudo-deepflow-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pseudo-deepflow-agent
+  template:
+    metadata:
+      labels:
+        app: pseudo-deepflow-agent
+    spec:
+      serviceAccountName: pseudo-deepflow-agent
+      containers:
+      - name: agent
+        # Replace with your actual image
+        image: your-registry/pseudo-deepflow-agent:latest
+        imagePullPolicy: Always
+        args:
+        - --cluster-id=my-k8s-cluster
+        - --deepflow-server=deepflow-server.deepflow.svc.cluster.local:30033
+        - --sync-interval=60
+        # Uncomment to enable Service resource sync
+        # - --enable-service
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi

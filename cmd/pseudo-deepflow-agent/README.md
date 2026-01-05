@@ -86,6 +86,15 @@ sudo apt-get install protobuf-compiler
 go install github.com/gogo/protobuf/protoc-gen-gofast@latest
 ```
 
+### Docker build
+
+Build the Docker image:
+
+```bash
+# From the repository root
+docker build -f cmd/pseudo-deepflow-agent/Dockerfile -t pseudo-deepflow-agent:latest .
+```
+
 ## Usage
 
 ### Required Flags
@@ -137,65 +146,27 @@ go install github.com/gogo/protobuf/protoc-gen-gofast@latest
 
 ### As a Kubernetes Deployment
 
-Create a deployment YAML:
+A complete deployment manifest is provided in `deployment.yaml`. Customize the following values:
 
-```yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: pseudo-deepflow-agent
-  namespace: deepflow
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: pseudo-deepflow-agent
-rules:
-- apiGroups: [""]
-  resources: ["nodes", "namespaces", "pods", "services", "replicationcontrollers"]
-  verbs: ["get", "list", "watch"]
-- apiGroups: ["apps"]
-  resources: ["deployments", "statefulsets", "daemonsets", "replicasets"]
-  verbs: ["get", "list", "watch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: pseudo-deepflow-agent
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: pseudo-deepflow-agent
-subjects:
-- kind: ServiceAccount
-  name: pseudo-deepflow-agent
-  namespace: deepflow
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: pseudo-deepflow-agent
-  namespace: deepflow
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: pseudo-deepflow-agent
-  template:
-    metadata:
-      labels:
-        app: pseudo-deepflow-agent
-    spec:
-      serviceAccountName: pseudo-deepflow-agent
-      containers:
-      - name: agent
-        image: your-registry/pseudo-deepflow-agent:latest
-        args:
-        - --cluster-id=my-k8s-cluster
-        - --deepflow-server=deepflow-server.deepflow.svc.cluster.local:30033
-        - --sync-interval=60
-        - --enable-service
+- `image`: Replace with your actual image registry and tag
+- `--cluster-id`: Your Kubernetes cluster ID
+- `--deepflow-server`: DeepFlow server address
+
+Deploy with:
+
+```bash
+# Create the deepflow namespace if it doesn't exist
+kubectl create namespace deepflow
+
+# Deploy pseudo-deepflow-agent
+kubectl apply -f deployment.yaml
 ```
+
+The deployment includes:
+- ServiceAccount with necessary RBAC permissions
+- ClusterRole with read access to required K8s resources
+- ClusterRoleBinding
+- Deployment with resource limits
 
 ### As a Standalone Binary
 

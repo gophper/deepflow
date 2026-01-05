@@ -1,0 +1,4 @@
+github.com/deepflowio/deepflow/server v1.6.65 h1:aQMENsPa/6Q3F4ZwfuPW3bgznRCAi9LeALqp61y+v18=
+github.com/deepflowio/deepflow/server v1.6.65/go.mod h1:jV4HklcgukTAeBfGOHlgVbbOqY4Y0y7Ej49jbLHoRqU=
+golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f h1:99ci1mjWVBWwJiEKYY6jWa4d2nTQVIEhZIptnrVb1XY=
+golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f/go.mod h1:/lliqkxwWAhPjf5oSOIJup2XcqJaw8RGS6k3TGEc7GI=

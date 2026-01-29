@@ -2,7 +2,7 @@
 
 As a data collection component deployed on hosts and container nodes, DeepFlow Agent has been designed and implemented with full consideration for host security and performance impact, adopting multiple protective measures.
 
-## 1. Security Protective Measures
+## I. Security Protective Measures
 
 ### 1.1 Permission Management and Principle of Least Privilege
 
@@ -26,7 +26,7 @@ DeepFlow Agent supports fine-grained permission control based on Linux Capabilit
 ### 1.2 Namespace Isolation
 
 - **Sidecar Mode**:
-  - Supports `--sidecar` mode for isolated pod-level monitoring
+  - Supports `--sidecar` mode for isolated Pod-level monitoring
   - In Sidecar mode, does not access host resources, only monitors applications within the same Pod
   - Suitable for scenarios with high security isolation requirements
 
@@ -48,7 +48,7 @@ DeepFlow Agent supports fine-grained permission control based on Linux Capabilit
   - Supports Linux 4.12 and above
   - Checks kernel version and feature support at startup to ensure compatibility
 
-## 2. Performance Protective Measures
+## II. Performance Protective Measures
 
 ### 2.1 Resource Limiting via Cgroups
 
@@ -120,14 +120,14 @@ DeepFlow Agent implements strict resource limits through Cgroups v1 and v2:
   - Independent Watchdog thread monitors for stuck operations
   - Promptly detects and handles abnormal situations
 
-### 2.5 Real-time Cgroups Controller Monitoring
+### 2.5 Cgroups Controller Real-time Monitoring
 
 - **Real-time Resource Monitoring**:
   - Cgroups controller checks resource limits every second
   - Dynamically updates resource usage status
   - Triggers alerts or takes protective measures when approaching limits
 
-## 3. Configuration and Tuning
+## III. Configuration and Tuning
 
 ### 3.1 Configuration-Driven Design
 
@@ -142,7 +142,7 @@ DeepFlow Agent implements strict resource limits through Cgroups v1 and v2:
 - Memory locking and initialization: `/agent/src/config/handler.rs`
 - eBPF architecture and security design: `/agent/src/ebpf/README.md`
 
-## 4. Performance Overhead Assessment
+## IV. Performance Overhead Assessment
 
 Typical performance overhead of DeepFlow Agent in production environments:
 
@@ -151,7 +151,7 @@ Typical performance overhead of DeepFlow Agent in production environments:
 - **Network Overhead**: eBPF zero-copy technology, minimal impact on application network performance
 - **Continuous Profiling Overhead**: < 1% (performance profiling via eBPF)
 
-## 5. Summary
+## V. Summary
 
 DeepFlow Agent ensures host security and minimal performance impact through the following core mechanisms:
 
